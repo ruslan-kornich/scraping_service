@@ -1,8 +1,8 @@
-import requests
 import codecs
-from bs4 import BeautifulSoup
 from random import randint
 
+import requests
+from bs4 import BeautifulSoup
 
 __all__ = ('work', 'dou', 'djinni')
 
@@ -37,16 +37,14 @@ def work(url, city=None, language=None):
                 content = div.p.text
                 company = div.find('div', class_='add-top-xs').find('span').text
                 jobs.append({'title': title, 'url': job_url,
-                             'description': content, 'company': company})
+                             'description': content, 'company': company,
+                             'city_id': city, 'language_id': language})
             else:
                 errors.append({'url': url, 'title': "Div does not exists"})
         else:
             errors.append({'url': url, 'title': "Page do not response"})
 
     return jobs, errors
-
-
-url = 'https://jobs.dou.ua/vacancies/?city=%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE&category=Python'
 
 
 def dou(url, city=None, language=None):
@@ -65,7 +63,8 @@ def dou(url, city=None, language=None):
                     content = li.find('div', attrs={'class': 'sh-info'}).text
                     company = li.find('div', attrs={'class': 'title'}).find_all('a')[1].text.strip()
                     jobs.append({'title': title, 'url': job_url,
-                                 'description': content, 'company': company})
+                                 'description': content, 'company': company,
+                                 'city_id': city, 'language_id': language})
             else:
                 errors.append({'url': url, 'title': "Div does not exists"})
         else:
@@ -94,7 +93,8 @@ def djinni(url, city=None, language=None):
                     company = li.find('div',
                                       attrs={'class': 'list-jobs__details__info'}).find('a').text.strip()
                     jobs.append({'title': title, 'url': job_url,
-                                 'description': content, 'company': company})
+                                 'description': content, 'company': company,
+                                 'city_id': city, 'language_id': language})
             else:
                 errors.append({'url': url, 'title': "Div does not exists"})
         else:
@@ -109,4 +109,3 @@ if __name__ == '__main__':
     h = codecs.open('work.txt', 'w', 'utf-8')
     h.write(str(jobs))
     h.close()
-

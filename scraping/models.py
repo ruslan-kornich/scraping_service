@@ -1,8 +1,12 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 
 
-# Create your models here.
+def default_urls():
+    return {
+        "work": "",
+        "dou": "",
+        "djinni": ""
+    }
 
 
 class City(models.Model):
@@ -51,6 +55,8 @@ class Vacancy(models.Model):
     class Meta:
         verbose_name = 'Вакансія'
         verbose_name_plural = 'Вакансії'
+        ordering = ['-timestamp']
+
 
     def __str__(self):
         return self.title
@@ -58,4 +64,18 @@ class Vacancy(models.Model):
 
 class Error(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
-    data = JSONField()
+    data = models.JSONField()
+
+
+class Url(models.Model):
+    city = models.ForeignKey('City', on_delete=models.CASCADE,
+                             verbose_name='Місто')
+    language = models.ForeignKey('Language', on_delete=models.CASCADE,
+                                 verbose_name='Мова програмування')
+    url_data = models.JSONField(default=default_urls)
+
+    class Meta:
+        unique_together = ("city", "language")
+
+    def __str__(self):
+        return f"{self.city} - {self.language}"
