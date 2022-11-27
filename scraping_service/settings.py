@@ -132,3 +132,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.MyUser'
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+DEFAULT_FROM_EMAIL = 'service@gmail.com'
+EMAIL_USE_TLC = True
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "korny4rus143@gmail.com"
